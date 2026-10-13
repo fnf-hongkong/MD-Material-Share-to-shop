@@ -137,6 +137,58 @@ td.no { color:#cbd5e1; }
 .week-tab.ac { background:#7e22ce; color:#fff; }
 .week-tab .cnt { font-size:10px; padding:1px 7px; border-radius:8px; background:rgba(0,0,0,.08); margin-left:4px; }
 .week-tab.ac .cnt { background:rgba(255,255,255,.25); }
+.ls-filterbar { display:flex; flex-direction:column; gap:14px; }
+.ls-filtergroup + .ls-filtergroup { border-top:1px dashed #e2e8f0; padding-top:12px; }
+.ls-filterhint { font-weight:600; text-transform:none; letter-spacing:0; color:#94a3b8; margin-left:6px; }
+.ls-chip.ls-shop { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.ls-chip.ls-shop .cnt { font-family:inherit; font-size:10px; font-weight:800; padding:1px 6px; border-radius:8px; background:#f1f5f9; color:#64748b; }
+.ls-chip.ls-shop:hover { border-color:#34d399; color:#047857; }
+.ls-chip.ls-shop.on { background:#059669; border-color:#059669; box-shadow:0 1px 3px rgba(5,150,105,.35); color:#fff; }
+.ls-chip.ls-shop.on:hover { background:#047857; border-color:#047857; }
+.ls-chip.ls-shop.on .cnt { background:rgba(255,255,255,.25); color:#fff; }
+.ls-chip.ls-shop.empty { opacity:.45; }
+.ls-chip.ls-shop-all { font-family:inherit; }
+.alloc-shop-summary { margin-top:4px; padding:10px 14px; border-radius:10px; background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:13px; font-weight:600; }
+.alloc-shop-summary b { font-size:15px; font-weight:800; }
+.alloc-table thead th.shop-hl { background:#059669; }
+.alloc-table tbody td.shop-hl { background:#d1fae5; font-weight:800; }
+.alloc-table tbody tr.alloc-total td.shop-hl { background:#a7f3d0; }
+.shop-basket { margin:4px 0 16px; }
+.shop-basket[hidden] { display:none; }
+.bk-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+.bk-title { font-size:16px; font-weight:800; color:#0f172a; }
+.bk-title .bk-shop { display:inline-block; background:#059669; color:#fff; padding:2px 10px; border-radius:8px; margin-right:6px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.bk-sub { font-size:12px; color:#64748b; font-weight:600; }
+.bk-board { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(210px, 1fr); gap:12px; overflow-x:auto; padding-bottom:6px; align-items:start; }
+.bk-col { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; }
+.bk-col-head { display:flex; align-items:center; justify-content:space-between; gap:6px; padding:9px 12px; background:#1e3a8a; color:#fff; font-weight:800; font-size:13px; position:sticky; top:0; }
+.bk-col-head .bk-cnt { font-size:10px; font-weight:700; background:rgba(255,255,255,.2); padding:2px 7px; border-radius:8px; white-space:nowrap; }
+.bk-list { display:flex; flex-direction:column; gap:8px; padding:10px; }
+.bk-item { background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:8px; }
+.bk-photos { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+.bk-ph { display:flex; flex-direction:column; align-items:center; gap:2px; }
+.bk-ph .photo.sm { width:56px; height:56px; cursor:zoom-in; }
+.bk-ph .bk-color { font-size:9px; font-weight:700; color:#475569; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.bk-name { font-size:11.5px; font-weight:800; color:#0f172a; line-height:1.3; margin-bottom:4px; }
+.bk-meta { display:flex; align-items:center; flex-wrap:wrap; gap:5px; font-size:10.5px; color:#64748b; }
+.bk-meta .bk-style { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.bk-meta .bk-price { font-weight:800; color:#0f172a; }
+.bk-empty { padding:16px; text-align:center; color:#94a3b8; font-size:13px; }
+/* Store Allocation week filter */
+.ls-filterbar { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; }
+.ls-filtergroup { display:flex; flex-direction:column; gap:8px; }
+.ls-filterlabel { font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#64748b; }
+.ls-monthhead { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+.ls-chipset { display:flex; flex-wrap:wrap; gap:6px; }
+.ls-chip { display:inline-flex; align-items:center; gap:4px; padding:6px 14px; border-radius:999px; font-family:inherit; font-size:13px; font-weight:700; line-height:1.2; cursor:pointer; background:#fff; color:#94a3b8; border:1.5px solid #cbd5e1; transition:background .15s, color .15s, border-color .15s; }
+.ls-chip:hover { border-color:#a855f7; color:#7e22ce; }
+.ls-chip.on { background:#7e22ce; color:#fff; border-color:#7e22ce; box-shadow:0 1px 3px rgba(126,34,206,.35); }
+.ls-chip.on::before { content:"✓"; font-size:11px; }
+.ls-chip.on:hover { background:#6b21a8; border-color:#6b21a8; color:#fff; }
+.ls-chip:focus-visible, .ls-bulk-btn:focus-visible { outline:2px solid #2563eb; outline-offset:2px; }
+.ls-bulk-btn { padding:6px 10px; border:none; background:none; font-family:inherit; font-size:12px; font-weight:700; color:#2563eb; cursor:pointer; border-radius:6px; }
+.ls-bulk-btn:hover { background:#eff6ff; }
+.ls-bulk-all { margin-left:4px; border-left:1px solid #e2e8f0; border-radius:0 6px 6px 0; padding-left:12px; }
 td.no-data { color:#cbd5e1; font-style:italic; }
 tr.alloc-filtered-out { display:none!important; }
 
@@ -233,7 +285,7 @@ tr.alloc-filtered-out { display:none!important; }
             <span class="tag-week" title="HK 20-Oct / MC 20-Oct">W43</span>
             <span class="tag-season">26F</span>
             <span class="tag-domain">Basic</span>
-            
+            <span class="tag-prelaunch">Pre-Launch</span>
           </div>
           <span class="card-price">🏷 $1599</span>
         </div>
@@ -254,7 +306,7 @@ tr.alloc-filtered-out { display:none!important; }
             <span class="tag-week" title="HK 20-Oct / MC 20-Oct">W43</span>
             <span class="tag-season">26F</span>
             <span class="tag-domain">Basic</span>
-            
+            <span class="tag-prelaunch">Pre-Launch</span>
           </div>
           <span class="card-price">🏷 $1899</span>
         </div>
@@ -275,7 +327,7 @@ tr.alloc-filtered-out { display:none!important; }
             <span class="tag-week" title="HK 20-Oct / MC 20-Oct">W43</span>
             <span class="tag-season">26F</span>
             <span class="tag-domain">Basic</span>
-            
+            <span class="tag-prelaunch">Pre-Launch</span>
           </div>
           <span class="card-price">🏷 $1799</span>
         </div>
@@ -296,7 +348,7 @@ tr.alloc-filtered-out { display:none!important; }
             <span class="tag-week" title="HK 20-Oct / MC 20-Oct">W43</span>
             <span class="tag-season">26F</span>
             <span class="tag-domain">Basic</span>
-            
+            <span class="tag-prelaunch">Pre-Launch</span>
           </div>
           <span class="card-price">🏷 $1899</span>
         </div>
@@ -639,7 +691,7 @@ tr.alloc-filtered-out { display:none!important; }
             <span class="tag-week" title="HK 20-Oct / MC 20-Oct">W43</span>
             <span class="tag-season">26F</span>
             <span class="tag-domain">Basic</span>
-            
+            <span class="tag-prelaunch">Pre-Launch</span>
           </div>
           <span class="card-price">🏷 $1899</span>
         </div>
@@ -877,7 +929,7 @@ tr.alloc-filtered-out { display:none!important; }
             <span class="tag-week" title="HK 12-Oct / MC 12-Oct">W42</span>
             <span class="tag-season">26F</span>
             <span class="tag-domain">Basic</span>
-            
+            <span class="tag-prelaunch">Pre-Launch</span>
           </div>
           <span class="card-price">🏷 $1699</span>
         </div>
@@ -898,7 +950,7 @@ tr.alloc-filtered-out { display:none!important; }
             <span class="tag-week" title="HK 12-Oct / MC 12-Oct">W42</span>
             <span class="tag-season">26F</span>
             <span class="tag-domain">Monogram</span>
-            
+            <span class="tag-prelaunch">Pre-Launch</span>
           </div>
           <span class="card-price">🏷 $2499</span>
         </div>
@@ -961,7 +1013,7 @@ tr.alloc-filtered-out { display:none!important; }
             <span class="tag-week" title="HK 12-Oct / MC 12-Oct">W42</span>
             <span class="tag-season">26F</span>
             <span class="tag-domain">Basic</span>
-            
+            <span class="tag-prelaunch">Pre-Launch</span>
           </div>
           <span class="card-price">🏷 $1699</span>
         </div>
@@ -6375,7 +6427,8 @@ tr.alloc-filtered-out { display:none!important; }
           <div class="shop-chips"><span class="shop-chip">HE2</span><span class="shop-chip">M01</span><span class="shop-chip">M02</span><span class="shop-chip">M05</span><span class="shop-chip">M09</span><span class="shop-chip">M10</span><span class="shop-chip">M11</span><span class="shop-chip">M14</span><span class="shop-chip">M16</span><span class="shop-chip">M17</span><span class="shop-chip">M18</span><span class="shop-chip">M22</span><span class="shop-chip">MC1</span><span class="shop-chip">MC2</span><span class="shop-chip">MC3</span></div>
         </div>
       </div>
-    </div></div></div></div></div></div><div id="body-alloc" class="main-body"><div class="table-scroll"><div class="alloc-search-wrap" style="margin-bottom:10px"><input type="text" id="allocSearchInput" oninput="allocApplyFilters()" placeholder="🔍 Search SKU, style code, or name..." style="width:320px;max-width:100%;padding:9px 14px;font-size:13px;font-family:inherit;border:1px solid #cbd5e1;border-radius:8px;outline:none"></div><div class="ls-filterbar" style="margin-bottom:10px"><div class="ls-filtergroup"><span class="ls-filterlabel">Filter by Week</span><div class="ls-monthhead"><div class="ls-chipset" id="allocWeekChips"><button class="ls-chip on" data-week="W43" onclick="allocToggleWeek(this)">W43</button><button class="ls-chip on" data-week="W42" onclick="allocToggleWeek(this)">W42</button><button class="ls-chip" data-week="W41" onclick="allocToggleWeek(this)">W41</button><button class="ls-chip" data-week="W40" onclick="allocToggleWeek(this)">W40</button><button class="ls-chip" data-week="W39" onclick="allocToggleWeek(this)">W39</button><button class="ls-chip" data-week="W37" onclick="allocToggleWeek(this)">W37</button><button class="ls-chip" data-week="W36" onclick="allocToggleWeek(this)">W36</button><button class="ls-chip" data-week="W35" onclick="allocToggleWeek(this)">W35</button><button class="ls-chip" data-week="W34" onclick="allocToggleWeek(this)">W34</button><button class="ls-chip" data-week="W33" onclick="allocToggleWeek(this)">W33</button><button class="ls-chip" data-week="W32" onclick="allocToggleWeek(this)">W32</button><button class="ls-chip" data-week="W31" onclick="allocToggleWeek(this)">W31</button></div><button class="ls-bulk-btn ls-bulk-all" onclick="allocSelectAllWeeks()">All</button><button class="ls-bulk-btn ls-bulk-none" onclick="allocUnselectAllWeeks()">None</button></div></div></div>
+    </div></div></div></div></div></div><div id="body-alloc" class="main-body"><div class="table-scroll"><div class="alloc-search-wrap" style="margin-bottom:10px"><input type="text" id="allocSearchInput" oninput="allocApplyFilters()" placeholder="🔍 Search SKU, style code, or name..." style="width:320px;max-width:100%;padding:9px 14px;font-size:13px;font-family:inherit;border:1px solid #cbd5e1;border-radius:8px;outline:none"></div><div class="ls-filterbar" style="margin-bottom:10px"><div class="ls-filtergroup"><span class="ls-filterlabel">Filter by Week</span><div class="ls-monthhead"><div class="ls-chipset" id="allocWeekChips"><button class="ls-chip on" data-week="W43" onclick="allocToggleWeek(this)">W43</button><button class="ls-chip on" data-week="W42" onclick="allocToggleWeek(this)">W42</button><button class="ls-chip" data-week="W41" onclick="allocToggleWeek(this)">W41</button><button class="ls-chip" data-week="W40" onclick="allocToggleWeek(this)">W40</button><button class="ls-chip" data-week="W39" onclick="allocToggleWeek(this)">W39</button><button class="ls-chip" data-week="W37" onclick="allocToggleWeek(this)">W37</button><button class="ls-chip" data-week="W36" onclick="allocToggleWeek(this)">W36</button><button class="ls-chip" data-week="W35" onclick="allocToggleWeek(this)">W35</button><button class="ls-chip" data-week="W34" onclick="allocToggleWeek(this)">W34</button><button class="ls-chip" data-week="W33" onclick="allocToggleWeek(this)">W33</button><button class="ls-chip" data-week="W32" onclick="allocToggleWeek(this)">W32</button><button class="ls-chip" data-week="W31" onclick="allocToggleWeek(this)">W31</button></div><button class="ls-bulk-btn ls-bulk-all" onclick="allocSelectAllWeeks()">All</button><button class="ls-bulk-btn ls-bulk-none" onclick="allocUnselectAllWeeks()">None</button></div></div><div class="ls-filtergroup"><span class="ls-filterlabel">Filter by Shop<span class="ls-filterhint">— pick a shop to see the new items it is getting</span></span><div class="ls-monthhead"><div class="ls-chipset" id="allocShopChips"><button class="ls-chip ls-shop ls-shop-all on" data-shop="" onclick="allocPickShop(this)">All shops</button><button class="ls-chip ls-shop" data-shop="HE1" onclick="allocPickShop(this)">HE1 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="HE2" onclick="allocPickShop(this)">HE2 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M01" onclick="allocPickShop(this)">M01 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M02" onclick="allocPickShop(this)">M02 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M05" onclick="allocPickShop(this)">M05 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M09" onclick="allocPickShop(this)">M09 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M10" onclick="allocPickShop(this)">M10 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M11" onclick="allocPickShop(this)">M11 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M14" onclick="allocPickShop(this)">M14 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M16" onclick="allocPickShop(this)">M16 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M17" onclick="allocPickShop(this)">M17 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M18" onclick="allocPickShop(this)">M18 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M21" onclick="allocPickShop(this)">M21 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M22" onclick="allocPickShop(this)">M22 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="M24" onclick="allocPickShop(this)">M24 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="MC1" onclick="allocPickShop(this)">MC1 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="MC2" onclick="allocPickShop(this)">MC2 <span class="cnt">0</span></button><button class="ls-chip ls-shop" data-shop="MC3" onclick="allocPickShop(this)">MC3 <span class="cnt">0</span></button></div></div><div class="alloc-shop-summary" id="allocShopSummary" hidden></div></div></div>
+    <div class="shop-basket" id="allocShopBasket" hidden></div>
     <table class="alloc-table">
       <thead>
         <tr><th>Photo</th><th>SKU</th><th>Name</th><th>Retail</th><th>Style</th><th>Launch</th><th>HE1</th><th>HE2</th><th>M01</th><th>M02</th><th>M05</th><th>M09</th><th>M10</th><th>M11</th><th>M14</th><th>M16</th><th>M17</th><th>M18</th><th>M21</th><th>M22</th><th>M24</th><th>MC1</th><th>MC2</th><th>MC3</th></tr>
@@ -9298,6 +9351,107 @@ function showCatWeek(btn, week) {
 }
 var ALLOC_ACTIVE_WEEKS = new Set();
 document.querySelectorAll("#allocWeekChips .ls-chip.on").forEach(function(c){ ALLOC_ACTIVE_WEEKS.add(c.dataset.week); });
+
+// basket board: what the picked shop is getting, one column per category
+var ALLOC_STYLE_INFO = {};
+document.querySelectorAll(".item-card").forEach(function(card){
+  var st = card.querySelector(".card-style"), badge = card.querySelector(".cat-badge");
+  if (!st || !badge) return;
+  var m = badge.textContent.match(/[A-Z]+/);
+  ALLOC_STYLE_INFO[st.textContent.trim()] = { cat: m ? m[0] : "OTHER", pre: !!card.querySelector(".tag-prelaunch") };
+});
+var ALLOC_BASKET_CATS = [["CAP","👑"],["BAG","👜"],["SHOES","👟"],["ETC","✨"],["OUTER","🍃"],["INNER","👕"],["BOTTOM","👖"],["OTHER","📦"]];
+function allocEsc(s) { return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function allocRenderBasket() {
+  var box = document.getElementById("allocShopBasket");
+  if (!box) return;
+  if (!ALLOC_SHOP) { box.hidden = true; box.innerHTML = ""; return; }
+  var groups = {}, order = [], skus = 0;
+  document.querySelectorAll("#allocBody tr[data-week]").forEach(function(tr){
+    if (tr.classList.contains("alloc-filtered-out")) return;
+    var styleTd = tr.querySelector("td.mono.small"); if (!styleTd) return;
+    var st = styleTd.textContent.trim(), sku = tr.querySelector("td.mono").textContent.trim();
+    var info = ALLOC_STYLE_INFO[st] || { cat: "OTHER", pre: false };
+    if (!groups[st]) {
+      var nameTd = tr.querySelector("td.alloc-name"), priceTd = tr.querySelector("td.num");
+      groups[st] = { style: st, cat: info.cat, pre: info.pre, week: tr.dataset.week, name: nameTd ? nameTd.textContent.trim() : "", price: priceTd ? priceTd.textContent.trim() : "", colors: [] };
+      order.push(st);
+    }
+    var ph = tr.querySelector(".alloc-photo .photo");
+    groups[st].colors.push({ code: sku.slice(st.length), photo: ph ? ph.outerHTML : "" });
+    skus++;
+  });
+  var cols = "";
+  ALLOC_BASKET_CATS.forEach(function(c){
+    var items = order.filter(function(st){ return groups[st].cat === c[0]; });
+    if (!items.length) return;
+    var n = items.reduce(function(a, st){ return a + groups[st].colors.length; }, 0);
+    cols += '<div class="bk-col"><div class="bk-col-head"><span>' + c[1] + ' ' + c[0] + '</span><span class="bk-cnt">' + items.length + ' styles · ' + n + ' SKUs</span></div><div class="bk-list">' +
+      items.map(function(st){
+        var g = groups[st];
+        return '<div class="bk-item"><div class="bk-photos">' +
+          g.colors.map(function(k){ return '<div class="bk-ph">' + k.photo + '<span class="bk-color">' + allocEsc(k.code) + '</span></div>'; }).join("") +
+          '</div><div class="bk-name">' + allocEsc(g.name) + '</div><div class="bk-meta"><span class="tag-week">' + g.week + '</span>' +
+          (g.pre ? '<span class="tag-prelaunch">Pre-Launch</span>' : '') +
+          '<span class="bk-style">' + allocEsc(g.style) + '</span><span class="bk-price">' + allocEsc(g.price) + '</span></div></div>';
+      }).join("") + '</div></div>';
+  });
+  box.hidden = false;
+  box.innerHTML = '<div class="bk-head"><div class="bk-title"><span class="bk-shop">' + ALLOC_SHOP + '</span>New items basket</div><div class="bk-sub">' + order.length + ' styles · ' + skus + ' SKUs · tap a photo to enlarge</div></div>' +
+    (cols ? '<div class="bk-board">' + cols + '</div>' : '<div class="bk-empty">No new items for ' + ALLOC_SHOP + ' in the selected weeks.</div>');
+  box.querySelectorAll(".photo.sm").forEach(function(p){ if (!p.classList.contains("noimg")) p.setAttribute("onclick", "openLB(this)"); });
+}
+// shop picker: one shop at a time, "" = all shops
+var ALLOC_SHOP_LIST = Array.prototype.slice.call(document.querySelectorAll(".alloc-table thead th")).slice(6).map(function(th){ return th.textContent.trim(); });
+var ALLOC_SHOP = "";
+function allocShopCells(tr) {
+  var tds = tr.querySelectorAll("td.has, td.no, td.no-data, td.num");
+  return Array.prototype.slice.call(tds, tds.length - ALLOC_SHOP_LIST.length);
+}
+function allocRowHasShop(tr, shop) {
+  var td = allocShopCells(tr)[ALLOC_SHOP_LIST.indexOf(shop)];
+  return !!td && td.classList.contains("has");
+}
+function allocPickShop(btn) {
+  var s = btn.dataset.shop;
+  if (s && s === ALLOC_SHOP) s = "";
+  ALLOC_SHOP = s;
+  document.querySelectorAll("#allocShopChips .ls-chip").forEach(function(c){ c.classList.toggle("on", c.dataset.shop === s); });
+  var idx = ALLOC_SHOP_LIST.indexOf(s);
+  Array.prototype.slice.call(document.querySelectorAll(".alloc-table thead th")).slice(6).forEach(function(th, i){ th.classList.toggle("shop-hl", i === idx); });
+  document.querySelectorAll("#allocBody tr").forEach(function(tr){
+    allocShopCells(tr).forEach(function(td, i){ td.classList.toggle("shop-hl", i === idx); });
+  });
+  allocApplyFilters();
+}
+function allocSearchOk(tr) {
+  var searchEl = document.getElementById("allocSearchInput");
+  var term = searchEl ? searchEl.value.trim().toLowerCase() : "";
+  if (!term) return true;
+  var hay = Array.prototype.map.call(tr.querySelectorAll("td.mono, td.alloc-name"), function(td){ return td.textContent; }).join(" ").toLowerCase();
+  return hay.indexOf(term) !== -1;
+}
+function allocUpdateShopView() {
+  var n = {}, rows = 0, styles = {};
+  document.querySelectorAll("#allocBody tr[data-week]").forEach(function(tr){
+    if (!ALLOC_ACTIVE_WEEKS.has(tr.dataset.week) || !allocSearchOk(tr)) return;
+    allocShopCells(tr).forEach(function(td, i){ if (td.classList.contains("has")) n[ALLOC_SHOP_LIST[i]] = (n[ALLOC_SHOP_LIST[i]] || 0) + 1; });
+    if (ALLOC_SHOP && allocRowHasShop(tr, ALLOC_SHOP)) { rows++; var st = tr.querySelector("td.mono.small"); if (st) styles[st.textContent.trim()] = 1; }
+  });
+  document.querySelectorAll("#allocShopChips .ls-chip").forEach(function(c){
+    if (!c.dataset.shop) return;
+    var k = n[c.dataset.shop] || 0;
+    c.querySelector(".cnt").textContent = k;
+    c.classList.toggle("empty", k === 0);
+  });
+  var box = document.getElementById("allocShopSummary");
+  if (!box) return;
+  if (!ALLOC_SHOP) { box.hidden = true; return; }
+  var weeks = Array.prototype.filter.call(document.querySelectorAll("#allocWeekChips .ls-chip"), function(c){ return c.classList.contains("on"); }).map(function(c){ return c.dataset.week; });
+  box.hidden = false;
+  box.innerHTML = "🏪 <b>" + ALLOC_SHOP + "</b> is getting <b>" + rows + "</b> new SKUs across <b>" + Object.keys(styles).length + "</b> styles" +
+    (weeks.length ? " in " + weeks.join(", ") : " — no week selected") + ".";
+}
 function allocToggleWeek(btn) {
   var w = btn.dataset.week;
   if (ALLOC_ACTIVE_WEEKS.has(w)) { ALLOC_ACTIVE_WEEKS.delete(w); btn.classList.remove("on"); }
@@ -9328,7 +9482,7 @@ function allocApplyFilters() {
       var hay = ((skuCell ? skuCell.textContent : "") + " " + (styleCell ? styleCell.textContent : "") + " " + (nameCell ? nameCell.textContent : "")).toLowerCase();
       searchOk = hay.indexOf(searchTerm) !== -1;
     }
-    var visible = weekOk && searchOk;
+    var visible = weekOk && searchOk && (!ALLOC_SHOP || allocRowHasShop(tr, ALLOC_SHOP));
     tr.classList.toggle("alloc-filtered-out", !visible);
     if (visible) {
       total++;
@@ -9337,6 +9491,8 @@ function allocApplyFilters() {
       shopTds.forEach(function(td, idx) { if (td.classList.contains("has")) shopCounts[idx]++; });
     }
   });
+  allocUpdateShopView();
+  allocRenderBasket();
   var totalRow = document.querySelector("#allocBody tr.alloc-total");
   if (totalRow) {
     var totalCells = totalRow.querySelectorAll("td.num");
