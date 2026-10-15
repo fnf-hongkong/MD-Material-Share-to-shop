@@ -2177,13 +2177,6 @@ var CATSHOT = {
         sub = fs ? (L ? '首售 ' : 'first sold ') + dayLabel(dparse(fs)) + ' · W' + isoWeekNo(dparse(fs))
           : (L ? '計劃 W' : 'plan W') + (s.eta ? isoWeekNo(dparse(s.eta)) : '—');
       } else sub = L ? '首次見於庫存表' : 'first on stock list';
-      // all colourways in one week share the style's ETA, so one vs-plan figure fits the card
-      var v = arrVsPlan(x0);
-      if (v != null) {
-        tag = v > 0 ? '<span class="arr-t arr-late">+' + v + (L ? ' 週' : ' wk') + '</span>'
-          : v < 0 ? '<span class="arr-t arr-ok">' + v + (L ? ' 週' : ' wk') + '</span>'
-          : '<span class="arr-t arr-ok">' + E(L ? '準時' : 'on plan') + '</span>';
-      }
     }
     var sq = [s.id, s.n, NAMES_ZH[s.id] || '', s.nk || '', s.nz || ''].concat(gr.xs.map(function (x) { return x.c.c + ' ' + s.id + x.c.c + ' ' + (x.c.nm || ''); })).join(' ').toLowerCase();
     return '<button data-id="' + s.id + '" data-ci="' + x0.ci + '" data-cat="' + E(cat) + '" data-q="' + E(sq) + '" title="' + E(s.id + ' · ' + nameOf(s) + ' · ' + cols) + '">' +
@@ -2336,8 +2329,8 @@ var CATSHOT = {
         : 'Counted from what actually landed in Hong Kong, not the planned ETA. Up to ' + dayLabel(asof) + ' (W' + isoWeekNo(asof) + '), from the weekly DX Allocation working files. Tap any colourway for its style card.') + '</div></div>' +
       stats + mx +
       '<div class="arr-bar"><div class="note">' + E(L
-        ? '週次以星期一開始（ISO 週，與每週銷售報告相同）。「+N 週」為比計劃到貨週遲了多少。'
-        : 'Weeks run Monday to Sunday (ISO weeks, the same numbers as the weekly sales report). "+N wk" is how many weeks after its planned ETA week a colourway landed.') + '</div>' +
+        ? '週次以星期一開始（ISO 週，與每週銷售報告相同）。'
+        : 'Weeks run Monday to Sunday (ISO weeks, the same numbers as the weekly sales report).') + '</div>' +
       (ARROUT.length ? '<button type="button" class="arr-ob" id="arr-ob" aria-expanded="' + ARROPEN + '" aria-controls="arr-out">' +
         E(L ? '未到貨貨品' : 'Outstanding items') + ' <b>' + ARROUT.length + '</b><span aria-hidden="true">' + (ARROPEN ? '▴' : '▾') + '</span></button>' : '') +
       '</div>' +
