@@ -474,7 +474,7 @@ html[lang="zh-Hant"] .mini .mq{font-family:var(--sans);font-size:10.5px}
 /* actual arrival: vs-plan / overdue marker on a colourway tile */
 .mini .arr-t{margin-left:auto;flex:none;font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 5px;border-radius:4px;border:1px solid;white-space:nowrap}
 .arr-late{background:var(--stop-soft);color:var(--stop);border-color:var(--stop-line)}
-.arr-ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
+.arr-ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)} .pst{align-self:flex-start;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.02em;padding:2px 6px;border-radius:4px;border:1px solid;white-space:nowrap} .pst-in{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)} .pst-due{background:var(--warn-soft);color:var(--warn);border-color:var(--warn-line)} .pst-late{background:var(--stop-soft);color:var(--stop);border-color:var(--stop-line)}
 table.mxt tfoot tr.arr-fr td{border-top:0;font-weight:600;color:var(--ok)}
 .arr-frn{display:block;font-size:9.5px;font-weight:400;color:var(--ink-3)}
 </style>
@@ -1312,6 +1312,29 @@ var CATSHOT = {
 
   function stylesN(n) { return (n === 1) ? t('p_style1') : t('p_stylesn', { n: n }); }
 
+  // In-store status for a style card, from the Actual Arrival data (ARR). The date is the
+  // warehouse receipt when there is one; otherwise the Monday stock list it first appeared
+  // on, which can trail the receipt by a week, so it reads "by"; colourways already on the
+  // first list (28 Sep) are "by 27 Sep" — or by their first HK sale, if earlier. Not arrived: planned ETA, flagged once it has passed.
+  function cardArr(s) {
+    var n = 0, best = null, by = false;
+    s.cols.forEach(function (c) {
+      var a = ARR.it[s.id + '-' + c.c]; if (!a) return;
+      n++;
+      var d = a.d || (a.w !== 'early' ? a.w : '2026-09-27'), b = !a.d;
+      if (b && a.fs && a.fs < d) d = a.fs;            // already selling before that list: it was in by then
+      if (!best || d < best) { best = d; by = b; } else if (d === best && !b) by = false;
+    });
+    if (n) {
+      var part = n < s.cols.length ? ' · ' + n + '/' + s.cols.length + (L ? ' 色' : ' col') : '';
+      return '<span class="pst pst-in" title="' + E(L ? '實際到店日期（Actual Arrival）' : 'Actual in-store date (Actual Arrival tab)') + '">' +
+        E((L ? '已上架 · ' : 'Launched · ') + (by ? (L ? '' : 'by ') : '') + dayLabel(dparse(best)) + (by && L ? '前' : '') + part) + '</span>';
+    }
+    if (!s.eta) return '<span class="pst pst-due">' + E(L ? '未有到貨日' : 'No ETA') + '</span>';
+    var late = s.eta < ARR.asof;
+    return '<span class="pst ' + (late ? 'pst-late' : 'pst-due') + '">' +
+      E((late ? (L ? '逾期 · 計劃 ' : 'Overdue · plan ') : (L ? '預計 ' : 'ETA ')) + dayLabel(dparse(s.eta))) + '</span>';
+  }
   function card(s) {
     var src = img(s.hero);
     return '<button class="pcard" data-id="' + s.id + '">' +
@@ -1322,6 +1345,7 @@ var CATSHOT = {
       '<div class="pcode">' + E(s.id) + ' · ' + E(g('type', s.t)) + '</div>' +
       '<div class="pname">' + E(nameOf(s)) + '</div>' +
       '<div style="display:flex;gap:4px;flex-wrap:wrap">' + lineChip(s.line) + '<span class="chip chip-g">' + E(g('gender', s.gl) || s.g) + '</span></div>' +
+      cardArr(s) +
       '<div class="sw">' + s.cols.map(function (c) {
         return '<i style="background:' + c.hex + '" title="' + E(c.c + (c.nm ? ' · ' + g('colour', c.nm) : '')) + '"></i>';
       }).join('') + '</div>' +
