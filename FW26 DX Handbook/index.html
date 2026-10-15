@@ -475,6 +475,8 @@ html[lang="zh-Hant"] .mini .mq{font-family:var(--sans);font-size:10.5px}
 .mini .arr-t{margin-left:auto;flex:none;font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 5px;border-radius:4px;border:1px solid;white-space:nowrap}
 .arr-late{background:var(--stop-soft);color:var(--stop);border-color:var(--stop-line)}
 .arr-ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
+table.mxt tfoot tr.arr-fr td{border-top:0;font-weight:600;color:var(--ok)}
+.arr-frn{display:block;font-size:9.5px;font-weight:400;color:var(--ink-3)}
 </style>
 </head>
 <body>
@@ -2098,6 +2100,7 @@ var CATSHOT = {
     });
     return out;
   })();
+  function arrPct(n, d) { return d ? Math.round(n / d * 100) + '%<span class="arr-frn">' + n + '/' + d + '</span>' : '—'; }
   function arrStyles(list) { var m = {}; list.forEach(function (x) { m[x.s.id] = 1; }); return Object.keys(m).length; }
   function arrWkLabel(w) {
     return w.key === 'early' ? (L ? '更早' : 'Earlier') : t('del_w', { n: isoWeekNo(w.mon) });
@@ -2205,7 +2208,17 @@ var CATSHOT = {
       ARRWEEKS.map(mxRow).join('') + '</tbody><tfoot><tr><td class="mono"><b>' + E(t('del_total')) + '</b></td><td></td>' +
       cats.map(function (c) { return '<td class="mx">' + ARRIN.filter(function (x) { return catOf(x.s) === c; }).length + '</td>'; }).join('') +
       '<td class="mono rt">' + arrStyles(ARRIN) + '</td><td class="mono rt">' + ARRIN.length + '</td>' +
-      '<td class="mono rt">' + nf(rcv.reduce(function (a, x) { return a + (x.a.q || 0); }, 0)) + '</td></tr></tfoot></table></div>';
+      '<td class="mono rt">' + nf(rcv.reduce(function (a, x) { return a + (x.a.q || 0); }, 0)) + '</td></tr>' +
+      // fulfil rate: what has landed against what Hong Kong bought, per column
+      '<tr class="arr-fr"><td class="mono"><b>' + E(L ? '到貨率' : 'Fulfil rate') + '</b></td><td class="mono">' + E(L ? '已到 / 已落單' : 'arrived / bought') + '</td>' +
+      cats.map(function (c) {
+        var all = ARRCW.filter(function (x) { return catOf(x.s) === c; }).length;
+        var n = ARRIN.filter(function (x) { return catOf(x.s) === c; }).length;
+        return '<td class="mx" title="' + E(g('cat', c) + ': ' + n + ' / ' + all + (L ? ' 色款' : ' colourways')) + '">' + arrPct(n, all) + '</td>';
+      }).join('') +
+      '<td class="mono rt" title="' + arrStyles(ARRIN) + ' / ' + S.length + '">' + arrPct(arrStyles(ARRIN), S.length) + '</td>' +
+      '<td class="mono rt" title="' + ARRIN.length + ' / ' + ARRCW.length + '">' + arrPct(ARRIN.length, ARRCW.length) + '</td>' +
+      '<td class="mono rt">—</td></tr></tfoot></table></div>';
 
     var cards = ARRWEEKS.map(function (w) {
       var by = {};
