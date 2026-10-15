@@ -483,6 +483,7 @@ table.mxt tfoot tr.arr-fr td{border-top:0;font-weight:600;color:var(--ok)}
 .arr-ob b{font-family:var(--mono);font-weight:600}
 .arr-ob[aria-expanded="true"]{background:var(--stop-soft)}
 .arr-out{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:16px}
+.arr-out[hidden]{display:none}  /* display:grid above would otherwise beat the hidden attribute */
 .arr-oh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:11.5px;color:var(--ink-2)}
 .arr-oh .cc{display:inline-flex;align-items:center;gap:6px;font-family:var(--disp);font-weight:700;font-size:13px;color:var(--ink)}
 .arr-oh .cc i{width:9px;height:9px;border-radius:2px;display:block}
