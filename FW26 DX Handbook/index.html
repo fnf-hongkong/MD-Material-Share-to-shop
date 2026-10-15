@@ -487,7 +487,7 @@ table.mxt tfoot tr.arr-fr td{border-top:0;font-weight:600;color:var(--ok)}
 .filters.arr-f{position:static}  /* display:grid above would otherwise beat the hidden attribute */
 .arr-oh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:11.5px;color:var(--ink-2)}
 .arr-oh .cc{display:inline-flex;align-items:center;gap:6px;font-family:var(--disp);font-weight:700;font-size:13px;color:var(--ink)}
-.arr-oh .cc i{width:9px;height:9px;border-radius:2px;display:block}
+.arr-oh .cc i{width:9px;height:9px;border-radius:2px;display:block} .arr-wg{margin-top:12px} .arr-wg .arr-oh{margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--line)} .arr-wg .arr-oh>span:last-child{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
 </style>
 </head>
 <body>
@@ -2183,7 +2183,7 @@ var CATSHOT = {
       (th ? '<img loading="lazy" alt="" src="' + th + '">' : '<span class="mph"></span>') +
       '<span style="min-width:0"><span class="mc">' + E(s.id + ' · ' + cols) + '</span>' +
       '<span class="mn2">' + E(nameOf(s)) + '</span>' +
-      '<span class="mq"><i style="background:' + catHex(cat) + '"></i>' + E(g('cat', cat) + ' · ' + sub) + '</span></span>' +
+      '<span class="mq"><i style="background:' + catHex(cat) + '"></i>' + E(mode === 'in' ? sub : g('cat', cat) + ' · ' + sub) + '</span></span>' +
       tag + '</button>';
   }
 
@@ -2198,6 +2198,9 @@ var CATSHOT = {
         var ok = (!AF.cat || b.dataset.cat === AF.cat) && (!q || b.dataset.q.indexOf(q) >= 0);
         b.style.display = ok ? '' : 'none';
         if (ok) { n++; seen[b.dataset.id] = 1; }
+      });
+      Array.prototype.forEach.call(a.querySelectorAll('.arr-wg'), function (gp) {
+        gp.style.display = Array.prototype.some.call(gp.querySelectorAll('.mini button'), function (b) { return b.style.display !== 'none'; }) ? '' : 'none';
       });
       a.style.display = on && !n ? 'none' : '';
       if (n) { shown += n; wks++; }
@@ -2296,10 +2299,12 @@ var CATSHOT = {
         (w.items.length ? '<div class="wkc-mix">' + ck.map(function (c) {
           return '<i style="background:' + catHex(c) + ';flex:' + by[c] + '" title="' + E(g('cat', c) + ' · ' + by[c]) + '"></i>';
         }).join('') + '</div>' +
-        '<div class="wkc-cats">' + ck.map(function (c) {
-          return '<span class="cc"><i style="background:' + catHex(c) + '"></i>' + E(g('cat', c)) + ' <b>' + by[c] + '</b></span>';
-        }).join('') + '</div>' +
-        '<div class="mini mini-g">' + arrGroup(w.items).map(function (gr) { return arrTile(gr, 'in'); }).join('') + '</div>' : '') +
+        ck.map(function (c) {
+          var xs = w.items.filter(function (x) { return catOf(x.s) === c; });
+          return '<div class="arr-wg"><div class="arr-oh"><span class="cc"><i style="background:' + catHex(c) + '"></i>' + E(g('cat', c)) + '</span>' +
+            '<span>' + E(by[c] + ' ' + (L ? '款' : styleWord(by[c])) + ' · ' + xs.length + ' ' + (L ? '色款' : 'colourways')) + '</span></div>' +
+            '<div class="mini mini-g">' + arrGroup(xs).map(function (gr) { return arrTile(gr, 'in'); }).join('') + '</div></div>';
+        }).join('') : '') +
         '</article>';
     }).join('');
 
