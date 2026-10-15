@@ -2110,28 +2110,47 @@ var CATSHOT = {
     if (!x.s.eta || x.a.w === 'early') return null;
     return Math.round((dparse(x.a.w) - mondayOf(dparse(x.s.eta))) / 6048e5);
   }
-  function arrTile(x, mode) {
-    var k = x.c.img || x.s.hero, th = img(k), cat = catOf(x.s), tag = '', sub = '';
+  // one card per style: the colourways of that style in this list fold into it,
+  // keeping the list's order (first colourway decides where the style sits)
+  function arrGroup(list) {
+    var m = {}, out = [];
+    list.forEach(function (x) {
+      if (!m[x.s.id]) { m[x.s.id] = { s: x.s, xs: [] }; out.push(m[x.s.id]); }
+      m[x.s.id].xs.push(x);
+    });
+    return out;
+  }
+  function arrTile(gr, mode) {
+    var s = gr.s, x0 = gr.xs[0], cat = catOf(s), tag = '', sub = '';
+    var th = img(x0.c.img || s.hero);
+    var cols = gr.xs.map(function (x) { return x.c.c; }).join(' · ');
     if (mode === 'out') {
-      var od = x.s.eta && x.s.eta < ARR.asof;
-      sub = x.s.eta ? ((L ? '計劃 ' : 'plan ') + dayLabel(dparse(x.s.eta)) + ' · W' + isoWeekNo(dparse(x.s.eta))) : (L ? '未有到貨日' : 'no ETA');
+      var od = s.eta && s.eta < ARR.asof;
+      sub = s.eta ? ((L ? '計劃 ' : 'plan ') + dayLabel(dparse(s.eta)) + ' · W' + isoWeekNo(dparse(s.eta))) : (L ? '未有到貨日' : 'no ETA');
       tag = od ? '<span class="arr-t arr-late">' + E(L ? '已過計劃日' : 'overdue') + '</span>' : '';
     } else {
-      var v = arrVsPlan(x);
-      sub = x.a.d ? ((L ? '收貨 ' : 'rcvd ') + dayLabel(dparse(x.a.d)) + (x.a.q ? ' · ' + nf(x.a.q) + ' ' + t('pcs') : ''))
-        : x.a.w === 'early'
-          ? (x.a.fs ? (L ? '首售 ' : 'first sold ') + dayLabel(dparse(x.a.fs)) + ' · W' + isoWeekNo(dparse(x.a.fs)) : (L ? '計劃 W' : 'plan W') + (x.s.eta ? isoWeekNo(dparse(x.s.eta)) : '—'))
-          : (L ? '首次見於庫存表' : 'first on stock list');
+      var rc = gr.xs.filter(function (x) { return x.a.d; });
+      var fs = gr.xs.map(function (x) { return x.a.fs; }).filter(Boolean).sort()[0];
+      if (rc.length) {
+        var d0 = rc.map(function (x) { return x.a.d; }).sort()[0];
+        var q = rc.reduce(function (a, x) { return a + (x.a.q || 0); }, 0);
+        sub = (L ? '收貨 ' : 'rcvd ') + dayLabel(dparse(d0)) + (q ? ' · ' + nf(q) + ' ' + t('pcs') : '');
+      } else if (x0.a.w === 'early') {
+        sub = fs ? (L ? '首售 ' : 'first sold ') + dayLabel(dparse(fs)) + ' · W' + isoWeekNo(dparse(fs))
+          : (L ? '計劃 W' : 'plan W') + (s.eta ? isoWeekNo(dparse(s.eta)) : '—');
+      } else sub = L ? '首次見於庫存表' : 'first on stock list';
+      // all colourways in one week share the style's ETA, so one vs-plan figure fits the card
+      var v = arrVsPlan(x0);
       if (v != null) {
         tag = v > 0 ? '<span class="arr-t arr-late">+' + v + (L ? ' 週' : ' wk') + '</span>'
           : v < 0 ? '<span class="arr-t arr-ok">' + v + (L ? ' 週' : ' wk') + '</span>'
           : '<span class="arr-t arr-ok">' + E(L ? '準時' : 'on plan') + '</span>';
       }
     }
-    return '<button data-id="' + x.s.id + '" data-ci="' + x.ci + '" title="' + E(x.s.id + '-' + x.c.c + ' · ' + nameOf(x.s) + ' · ' + x.c.nm) + '">' +
+    return '<button data-id="' + s.id + '" data-ci="' + x0.ci + '" title="' + E(s.id + ' · ' + nameOf(s) + ' · ' + cols) + '">' +
       (th ? '<img loading="lazy" alt="" src="' + th + '">' : '<span class="mph"></span>') +
-      '<span style="min-width:0"><span class="mc">' + E(x.s.id + ' · ' + x.c.c) + '</span>' +
-      '<span class="mn2">' + E(nameOf(x.s)) + '</span>' +
+      '<span style="min-width:0"><span class="mc">' + E(s.id + ' · ' + cols) + '</span>' +
+      '<span class="mn2">' + E(nameOf(s)) + '</span>' +
       '<span class="mq"><i style="background:' + catHex(cat) + '"></i>' + E(g('cat', cat) + ' · ' + sub) + '</span></span>' +
       tag + '</button>';
   }
@@ -2190,7 +2209,8 @@ var CATSHOT = {
 
     var cards = ARRWEEKS.map(function (w) {
       var by = {};
-      w.items.forEach(function (x) { var c = catOf(x.s); by[c] = (by[c] || 0) + 1; });
+      // chips count styles, matching one card per style below
+      arrGroup(w.items).forEach(function (gr) { var c = catOf(gr.s); by[c] = (by[c] || 0) + 1; });
       var ck = CATORDER.filter(function (c) { return by[c]; });
       var pos = {};
       w.items.forEach(function (x) { if (x.a.po) pos[x.a.po + ' · ' + dayLabel(dparse(x.a.d))] = 1; });
@@ -2217,7 +2237,7 @@ var CATSHOT = {
         '<div class="wkc-cats">' + ck.map(function (c) {
           return '<span class="cc"><i style="background:' + catHex(c) + '"></i>' + E(g('cat', c)) + ' <b>' + by[c] + '</b></span>';
         }).join('') + '</div>' +
-        '<div class="mini mini-g">' + w.items.map(function (x) { return arrTile(x, 'in'); }).join('') + '</div>' : '') +
+        '<div class="mini mini-g">' + arrGroup(w.items).map(function (gr) { return arrTile(gr, 'in'); }).join('') + '</div>' : '') +
         '</article>';
     }).join('');
 
@@ -2245,7 +2265,7 @@ var CATSHOT = {
       '<div class="sec-note">' + E(L
         ? ARROUT.length + ' 個色款（' + arrStyles(ARROUT) + ' 款）仍未見於收貨或庫存記錄，按計劃到貨日排列。'
         : ARROUT.length + ' colourways (' + arrStyles(ARROUT) + ' styles) have no receipt or stock record yet, in planned-ETA order.') + '</div></div>' +
-      '<div class="mini mini-g">' + outSorted.map(function (x) { return arrTile(x, 'out'); }).join('') + '</div>' +
+      '<div class="mini mini-g">' + arrGroup(outSorted).map(function (gr) { return arrTile(gr, 'out'); }).join('') + '</div>' +
       '<div class="note" style="margin-top:16px">' + E(L
         ? '注意：庫存表比收貨記錄慢約一週（9 月 18 日收貨的色款要到 10 月 5 日的庫存表才出現），所以只靠庫存表判斷的色款，實際到貨可能早一週。來源檔案每週一更新；有新一週的 Allocation 檔便可加入新一週。'
         : 'Caveat: the stock list trails the warehouse receipt by about a week (colourways received on 18 Sep only appear on the 5 Oct list), so a colourway dated by the stock list alone may have landed a week earlier. The source files come out every Monday; each new Allocation file adds a week.') + '</div>' +
