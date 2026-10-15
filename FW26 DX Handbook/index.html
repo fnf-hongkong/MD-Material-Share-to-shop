@@ -483,7 +483,8 @@ table.mxt tfoot tr.arr-fr td{border-top:0;font-weight:600;color:var(--ok)}
 .arr-ob b{font-family:var(--mono);font-weight:600}
 .arr-ob[aria-expanded="true"]{background:var(--stop-soft)}
 .arr-out{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:16px}
-.arr-out[hidden]{display:none}  /* display:grid above would otherwise beat the hidden attribute */
+.arr-out[hidden]{display:none}
+.filters.arr-f{position:static}  /* display:grid above would otherwise beat the hidden attribute */
 .arr-oh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:11.5px;color:var(--ink-2)}
 .arr-oh .cc{display:inline-flex;align-items:center;gap:6px;font-family:var(--disp);font-weight:700;font-size:13px;color:var(--ink)}
 .arr-oh .cc i{width:9px;height:9px;border-radius:2px;display:block}
@@ -2184,7 +2185,8 @@ var CATSHOT = {
           : '<span class="arr-t arr-ok">' + E(L ? '準時' : 'on plan') + '</span>';
       }
     }
-    return '<button data-id="' + s.id + '" data-ci="' + x0.ci + '" title="' + E(s.id + ' · ' + nameOf(s) + ' · ' + cols) + '">' +
+    var sq = [s.id, s.n, NAMES_ZH[s.id] || '', s.nk || '', s.nz || ''].concat(gr.xs.map(function (x) { return x.c.c + ' ' + s.id + x.c.c + ' ' + (x.c.nm || ''); })).join(' ').toLowerCase();
+    return '<button data-id="' + s.id + '" data-ci="' + x0.ci + '" data-cat="' + E(cat) + '" data-q="' + E(sq) + '" title="' + E(s.id + ' · ' + nameOf(s) + ' · ' + cols) + '">' +
       (th ? '<img loading="lazy" alt="" src="' + th + '">' : '<span class="mph"></span>') +
       '<span style="min-width:0"><span class="mc">' + E(s.id + ' · ' + cols) + '</span>' +
       '<span class="mn2">' + E(nameOf(s)) + '</span>' +
@@ -2192,6 +2194,25 @@ var CATSHOT = {
       tag + '</button>';
   }
 
+  var AF = { q: '', cat: '' };   // Arrivals by week filter; kept across a language switch
+  // hide tiles (and then whole weeks) that miss the category / search; done on the DOM so
+  // typing never re-renders the tab and loses the cursor
+  function arrApply() {
+    var q = AF.q.trim().toLowerCase(), on = !!(q || AF.cat), shown = 0, wks = 0, seen = {};
+    Array.prototype.forEach.call($('v-arrival').querySelectorAll('.arr-wk'), function (a) {
+      var n = 0;
+      Array.prototype.forEach.call(a.querySelectorAll('.mini button'), function (b) {
+        var ok = (!AF.cat || b.dataset.cat === AF.cat) && (!q || b.dataset.q.indexOf(q) >= 0);
+        b.style.display = ok ? '' : 'none';
+        if (ok) { n++; seen[b.dataset.id] = 1; }
+      });
+      a.style.display = on && !n ? 'none' : '';
+      if (n) { shown += n; wks++; }
+    });
+    var ns = Object.keys(seen).length;
+    $('arr-n').textContent = !on ? '' : L ? (ns + ' 款 · ' + wks + ' 週') : (ns + (ns === 1 ? ' style' : ' styles') + ' · ' + wks + (wks === 1 ? ' week' : ' weeks'));
+    $('arr-none').style.display = on && !shown ? '' : 'none';
+  }
   var ARROPEN = false;   // Outstanding items panel; kept open across a language switch
   function renderArrival() {
     var dated = ARRWEEKS.filter(function (w) { return w.key !== 'early'; });
@@ -2271,7 +2292,7 @@ var CATSHOT = {
           (w.items.length > nRcv ? (Object.keys(pos).length ? ' · ' : '') + (L
             ? (w.items.length - nRcv) + ' 個色款首次出現在 ' + dayLabel(addDays(w.mon, 7)) + ' 的庫存表'
             : (w.items.length - nRcv) + ' colourways first appear on the ' + dayLabel(addDays(w.mon, 7)) + ' stock list') : '');
-      return '<article class="wkc">' +
+      return '<article class="wkc arr-wk">' +
         '<div class="wkc-h"><div class="wkc-w"><b>' + E(arrWkLabel(w)) + '</b><span>' + E(arrRange(w)) + '</span></div>' +
         '<div class="wkc-n">' +
         '<div><b>' + w.ns + '</b><span>' + E(styleWord(w.ns)) + '</span></div>' +
@@ -2324,7 +2345,14 @@ var CATSHOT = {
       '</section>' +
       '<section><div class="sec-head"><h2>' + E(L ? '逐週到貨清單' : 'Arrivals by week') + '</h2>' +
       '<div class="sec-note">' + E(L ? '最新一週排最前。' : 'Newest week first.') + '</div></div>' +
-      '<div class="wks">' + cards + '</div></section>' +
+      '<div class="filters arr-f">' +
+      '<input type="search" id="arr-q" placeholder="' + E(L ? '搜尋款號、名稱或顏色' : 'Search style code, name or colour') + '" aria-label="' + E(L ? '搜尋' : 'Search') + '" value="' + E(AF.q) + '">' +
+      ['', ].concat(CATORDER.filter(function (c) { return ARRIN.some(function (x) { return catOf(x.s) === c; }); })).map(function (c) {
+        return '<button type="button" class="pill" data-acat="' + E(c) + '" aria-pressed="' + (AF.cat === c) + '">' + E(c ? g('cat', c) : (L ? '全部' : 'All')) + '</button>';
+      }).join('') +
+      '<span class="count" id="arr-n"></span></div>' +
+      '<div class="note" id="arr-none" style="display:none;margin-top:12px">' + E(L ? '沒有符合的已到貨款式。' : 'No arrived styles match.') + '</div>' +
+      '<div class="wks" style="margin-top:14px">' + cards + '</div></section>' +
       '<section><div class="sec-head"><h2>' + E(L ? '尚未到貨' : 'Still to come') + '</h2>' +
       '<div class="sec-note">' + E(L
         ? ARROUT.length + ' 個色款（' + arrStyles(ARROUT) + ' 款）仍未見於收貨或庫存記錄，按計劃到貨日排列。'
@@ -2334,6 +2362,7 @@ var CATSHOT = {
         ? '注意：庫存表比收貨記錄慢約一週（9 月 18 日收貨的色款要到 10 月 5 日的庫存表才出現），所以只靠庫存表判斷的色款，實際到貨可能早一週。來源檔案每週一更新；有新一週的 Allocation 檔便可加入新一週。'
         : 'Caveat: the stock list trails the warehouse receipt by about a week (colourways received on 18 Sep only appear on the 5 Oct list), so a colourway dated by the stock list alone may have landed a week earlier. The source files come out every Monday; each new Allocation file adds a week.') + '</div>' +
       '</section>';
+    arrApply();
   }
 
   /* ================= AMBASSADORS ================= */
@@ -2463,7 +2492,19 @@ var CATSHOT = {
       if (b && b.dataset.id) openDrawer(b.dataset.id);
     });
   });
+  $('v-arrival').addEventListener('input', function (e) {
+    if (e.target.id === 'arr-q') { AF.q = e.target.value; arrApply(); }
+  });
   $('v-arrival').addEventListener('click', function (e) {
+    var p = e.target.closest('[data-acat]');
+    if (p) {
+      AF.cat = p.dataset.acat;
+      Array.prototype.forEach.call($('v-arrival').querySelectorAll('[data-acat]'), function (x) {
+        x.setAttribute('aria-pressed', String(x.dataset.acat === AF.cat));
+      });
+      arrApply();
+      return;
+    }
     if (e.target.closest('#arr-ob')) {
       ARROPEN = !ARROPEN;
       $('arr-out').hidden = !ARROPEN;
