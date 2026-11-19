@@ -1001,7 +1001,7 @@ window.SSG_LAUNCH = function (ctx) {
       /* no domain label on the weekly new launch (user, 2026-11-04: "remove Varsity, Basic this kind of
          domain label"), but the LIFESTYLE does belong there (user, 2026-11-05); the IMC side keeps its remark tag */
       '<div class="lmeta">' + (isNL ?
-        lsTag(x.s) + '<span class="lshop">' + x.shops.length + ' shops</span>' : (x.r ? '<span class="ldom">' + esc(x.r) + '</span>' : '') + launchTxt(x.l)) + '</div>' +
+        lsTag(x.s) + '<span class="lshop">' + x.shops.filter(function (d) { return (D.meta.shops || []).indexOf(d) >= 0; }).length + ' shops</span>'   /* regular stores only - no HE1-3 online / outlets (user, 2026-11-19) */ : (x.r ? '<span class="ldom">' + esc(x.r) + '</span>' : '') + launchTxt(x.l)) + '</div>' +
       '<div class="lq">style SOH <b>' + n0(q) + '</b></div></div></div>';
   }
   function csoh(k) {
