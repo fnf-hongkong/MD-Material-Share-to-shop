@@ -1086,13 +1086,33 @@ window.SSG_LAUNCH = function (ctx) {
       (x.r ? row('Remark', esc(x.r)) : '') +
       row('Retail (HKD)', x.p ? (String(x.p).charAt(0) === '$' ? esc(x.p) : 'HK$' + n0(x.p)) : '\u2014') +
       row('Launch', h.t === 'NL' ? esc(h.wk) + ' \u00b7 ' + day(h.d) : launchTxt(x.l)) +
-      '<div class="drow blk"><b>Available stores (' + avail.length + '/' + (D.meta.shops || []).length +
-        ') \u00b7 SOH ' + n0(tot) + ' <span class="mini">Cegid ' + day(String(LF.asof)
-          .replace(/(\d{4})(\d\d)(\d\d)/, '$1-$2-$3')) + '</span></b><div class="dstores">' +
-      shops.map(function (p) {
-        return '<span class="dstore' + (p[1] ? ' on' : '') + (p[0] === S.store ? ' me' : '') + '">' + esc(p[0]) +
-          (p[1] ? ' <i>' + n0(p[1]) + '</i>' : '') + '</span>';
-      }).join('') + '</div></div></div>' +
+      /* coming launch, same format as the RTW pop-up (user, 2026-11-20: "for ACC part, pls also follow RTW format"):
+         until the launch day passes the Cegid date, stores allocated in the weekly new-launch plan show the purple
+         dashed "Wxx" chip; with no stock anywhere the heading says Coming launch with the week, day and n/15 stores */
+      (function () {
+        var nl = null, ms = D.meta.shops || [];
+        LF.months.forEach(function (m) {
+          (LF.nl[m] || []).forEach(function (w) {
+            (w.items || []).forEach(function (y) { if (y.s === s && (!nl || nl.d < w.d)) nl = { wk: w.wk, d: w.d, shops: y.shops || [] }; });
+          });
+        });
+        if (nl && nl.d.replace(/-/g, '') <= String(LF.asof)) nl = null;
+        var alloc = nl ? nl.shops : [];
+        var head = tot === 0 && nl
+          ? 'Coming launch \u00b7 ' + esc(nl.wk) + ' \u00b7 ' + day(nl.d) + ' \u00b7 allocated to ' +
+            alloc.filter(function (d) { return ms.indexOf(d) >= 0; }).length + '/' + ms.length + ' stores'
+          : 'Available stores (' + avail.length + '/' + ms.length + ') \u00b7 SOH ' + n0(tot) +
+            ' <span class="mini">Cegid ' + day(String(LF.asof).replace(/(\d{4})(\d\d)(\d\d)/, '$1-$2-$3')) + '</span>';
+        return '<div class="drow blk"><b>' + head + '</b><div class="dstores">' +
+          shops.map(function (p) {
+            var coming = !p[1] && alloc.indexOf(p[0]) >= 0;
+            return '<span class="dstore' + (p[1] ? ' on' : '') + (coming ? ' nl' : '') + (p[0] === S.store ? ' me' : '') + '"' +
+              (coming ? ' title="new launch ' + esc(nl.wk) + ' \u00b7 ' + day(nl.d) + ' - allocated, not in stock yet"' : '') + '>' + esc(p[0]) +
+              (p[1] ? ' <i>' + n0(p[1]) + '</i>' : coming ? ' <i>' + esc(nl.wk) + '</i>' : '') + '</span>';
+          }).join('') + '</div>' +
+          (nl ? '<div class="mini" style="margin-top:4px"><span class="dstore nl" style="padding:0 6px">' + esc(nl.wk) + '</span> = allocated in the new launch plan (' +
+            esc(nl.wk) + ', launch ' + day(nl.d) + '), not in stock yet</div>' : '') + '</div>';
+      })() + '</div>' +
       '<div class="dside"><div class="dsu"><div class="sph">Colours \u00b7 ' +
         esc(S.store === 'ALL' ? 'all stores' : S.store) + '</div><div class="dsul">' +
       cols.map(function (c) {
